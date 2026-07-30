@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>OllamaGPT</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Inter, sans-serif;
+        }
+
+        body {
+
+            background: #0d1117;
+
+            overflow: hidden;
+
+            color: white;
+
+        }
+
+        #app {
+
+            display: flex;
+
+            height: 100vh;
+
+            width: 100vw;
+
+        }
+
+
+
+
+
+
+
+
+
+        /* SIDEBAR */
+
+        .sidebar {
+
+            width: 270px;
+
+            background: #111827;
+
+            display: flex;
+
+            flex-direction: column;
+
+            border-right: 1px solid rgba(255, 255, 255, .08);
+
+            transition: .25s;
+
+        }
+
+        .logo {
+
+            padding: 25px;
+
+            font-size: 28px;
+
+            font-weight: 700;
+
+        }
+
+        .newChat {
+
+            margin: 15px;
+
+            padding: 15px;
+
+            border-radius: 14px;
+
+            cursor: pointer;
+
+            background: #3b82f6;
+
+            text-align: center;
+
+            font-weight: 600;
+
+            transition: .25s;
+
+        }
+
+        .newChat:hover {
+
+            transform: scale(1.03);
+
+        }
+
+        .search {
+
+            margin: 15px;
+
+            padding: 13px;
+
+            border-radius: 12px;
+
+            background: #1f2937;
+
+            border: none;
+
+            outline: none;
+
+            color: white;
+
+        }
+
+        .chatList {
+
+            flex: 1;
+
+            overflow: auto;
+
+            padding: 10px;
+
+        }
+
+        .chat {
+
+            padding: 14px;
+
+            margin-bottom: 8px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            transition: .2s;
+
+            background: transparent;
+
+        }
+
+        .chat:hover {
+
+            background: #1f2937;
+
+        }
+
+        .sidebarFooter {
+
+            padding: 18px;
+
+            border-top: 1px solid rgba(255, 255, 255, .08);
+
+        }
+
+        .user {
+
+            font-size: 14px;
+
+            opacity: .9;
+
+        }
+
+        .tokens {
+
+            margin-top: 8px;
+
+            color: #22c55e;
+
+            font-weight: 700;
+
+        }
+
+
+
+
+
+
+
+
+
+
+        .main {
+
+            flex: 1;
+
+            display: flex;
+
+            flex-direction: column;
+
+            background: #0d1117;
+
+        }
+
+        .topbar {
+
+            height: 70px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 20px;
+
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+
+        }
+
+        .left {
+
+            display: flex;
+
+            gap: 15px;
+
+            align-items: center;
+
+        }
+
+        .right {
+
+            display: flex;
+
+            gap: 15px;
+
+            align-items: center;
+
+        }
+
+        select {
+
+            background: #1f2937;
+
+            color: white;
+
+            padding: 10px;
+
+            border-radius: 10px;
+
+            border: none;
+
+        }
+
+        .slider {
+
+            width: 120px;
+
+        }
+
+
+
+
+
+
+
+
+
+        .chatArea {
+
+            flex: 1;
+
+            overflow: auto;
+
+            padding: 35px;
+
+        }
+
+        .message {
+
+            max-width: 900px;
+
+            margin: auto;
+
+            margin-bottom: 35px;
+
+            display: flex;
+
+            gap: 18px;
+
+            animation: fade .25s;
+
+        }
+
+        .avatar {
+
+            width: 45px;
+
+            height: 45px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 22px;
+
+            background: #2563eb;
+
+        }
+
+        .ai {
+
+            background: #16a34a;
+
+        }
+
+        .bubble {
+
+            flex: 1;
+
+            padding: 18px;
+
+            border-radius: 16px;
+
+            background: #161b22;
+
+            line-height: 1.7;
+
+        }
+
+        .bubble pre {
+
+            margin-top: 15px;
+
+            padding: 18px;
+
+            border-radius: 12px;
+
+            overflow: auto;
+
+        }
+
+        .bubble code {
+
+            font-size: 14px;
+
+        }
+
+
+
+
+
+
+
+
+
+        .bottom {
+
+            padding: 25px;
+
+        }
+
+        .inputBox {
+
+            max-width: 900px;
+
+            margin: auto;
+
+            display: flex;
+
+            gap: 15px;
+
+            background: #161b22;
+
+            padding: 15px;
+
+            border-radius: 18px;
+
+        }
+
+        textarea {
+
+            flex: 1;
+
+            resize: none;
+
+            background: none;
+
+            border: none;
+
+            outline: none;
+
+            font-size: 16px;
+
+            color: white;
+
+            height: 80px;
+
+        }
+
+        button {
+
+            background: #3b82f6;
+
+            border: none;
+
+            color: white;
+
+            padding: 14px 22px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+        }
+
+        button:hover {
+
+            background: #2563eb;
+
+        }
+
+        @keyframes fade {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(10px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: none;
+
+            }
+
+        }
+
+        ::-webkit-scrollbar {
+
+            width: 8px;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+
+            background: #333;
+
+            border-radius: 20px;
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="app">
+
+        <div class="sidebar">
+
+            <div class="logo">
+
+                🤖 OllamaGPT
+
+            </div>
+
+            <div class="newChat">
+
+                ＋ New Chat
+
+            </div>
+
+            <input class="search" placeholder="Search chats...">
+
+            <div class="chatList" id="chatList">
+
+            </div>
+
+            <div class="sidebarFooter">
+
+                <div class="user" id="username">
+
+                    Not logged in
+
+                </div>
+
+                <div class="tokens" id="tokens">
+
+                    Tokens: 0
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="main">
+
+            <div class="topbar">
+
+                <div class="left">
+
+                    <select id="modelSelect">
+
+                        <option>
+
+                            Loading models...
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="right">
+
+                    <label>
+
+                        🌡
+
+                        <input class="slider" type="range" min="0" max="2" step=".1" value=".7" id="temperature">
+
+                    </label>
+
+                    <label>
+
+                        🧠
+
+                        <input class="slider" type="range" min="1024" max="32768" step="1024" value="4096" id="context">
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="chatArea" id="chatArea">
+
+            </div>
+
+            <div class="bottom">
+
+                <div class="inputBox">
+
+                    <textarea id="prompt" placeholder="Message Ollama..."></textarea>
+
+                    <button id="send">
+
+                        Send
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+
+        let currentChat = null;
+        let currentUser = null;
+
+        const chatArea = document.getElementById("chatArea");
+        const chatList = document.getElementById("chatList");
+        const modelSelect = document.getElementById("modelSelect");
+        const prompt = document.getElementById("prompt");
+        const sendBtn = document.getElementById("send");
+
+        const usernameText = document.getElementById("username");
+        const tokenText = document.getElementById("tokens");
+
+        const temperatureSlider =
+            document.getElementById("temperature");
+
+        const contextSlider =
+            document.getElementById("context");
+
+        function toast(text) {
+
+            const t = document.createElement("div");
+
+            t.innerText = text;
+
+            t.style.position = "fixed";
+            t.style.right = "25px";
+            t.style.bottom = "25px";
+            t.style.padding = "14px 20px";
+            t.style.borderRadius = "12px";
+            t.style.background = "#2563eb";
+            t.style.color = "white";
+            t.style.zIndex = 9999;
+
+            document.body.appendChild(t);
+
+            setTimeout(() => {
+
+                t.remove();
+
+            }, 2500);
+
+        }
+        async function api(url, method = "GET", body = null) {
+
+            const options = {
+                method,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            };
+
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+
+            const response = await fetch(url, options);
+
+            return response.json();
+
+        }
+
+        async function streamChat(data, onChunk) {
+
+            const response = await fetch("/api/chat", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+
+            });
+
+            if (!response.ok) {
+
+                throw new Error("Chat request failed.");
+
+            }
+
+            const reader = response.body.getReader();
+
+            const decoder = new TextDecoder();
+
+            let full = "";
+
+            while (true) {
+
+                const { done, value } = await reader.read();
+
+                if (done) break;
+
+                const chunk = decoder.decode(value);
+
+                full += chunk;
+
+                onChunk(full);
+
+            }
+
+            return full;
+
+        };
+
+        if (body) {
+
+            options.body = JSON.stringify(body);
+
+        }
+
+        const r = await fetch(url, options);
+
+        return await r.json();
+
+
+
+        async function login() {
+
+            let username = promptify("Username", "admin");
+
+            if (username === null) return;
+
+            let password = promptify("Password", "admin");
+
+            if (password === null) return;
+
+            const r = await api(
+
+                "/api/login",
+
+                "POST",
+
+                {
+
+                    username,
+
+                    password
+
+                }
+
+            );
+
+            if (!r.success) {
+
+                alert("Login failed");
+
+                return;
+
+            }
+
+            currentUser = r.user;
+
+            usernameText.innerText = currentUser.username;
+
+            tokenText.innerText = "Tokens: " + currentUser.tokens;
+
+            toast("Welcome!");
+
+            loadModels();
+
+            loadChats();
+
+        }
+
+        function promptify(text, value = "") {
+
+            return window.prompt(text, value);
+
+        }
+
+        async function loadModels() {
+
+            const models = await api("/api/models");
+
+            modelSelect.innerHTML = "";
+
+            models.forEach(m => {
+
+                const option = document.createElement("option");
+
+                option.value = m.name;
+
+                option.innerText = m.name;
+
+                modelSelect.appendChild(option);
+
+            });
+
+        }
+
+        async function loadChats() {
+
+            const chats = await api("/api/chats");
+
+            chatList.innerHTML = "";
+
+            chats.forEach(chat => {
+
+                const div = document.createElement("div");
+
+                div.className = "chat";
+
+                div.innerText = chat.title;
+
+                div.onclick = () => {
+
+                    openChat(chat.id);
+
+                };
+
+                chatList.appendChild(div);
+
+            });
+
+        }
+
+        async function openChat(id) {
+
+            currentChat = id;
+
+            chatArea.innerHTML = "";
+
+            const messages =
+
+                await api(
+
+                    "/api/chats/" + id + "/messages"
+
+                );
+
+            messages.forEach(addMessage);
+
+            chatArea.scrollTop = chatArea.scrollHeight;
+
+        }
+
+        function addMessage(m) {
+
+            const wrapper = document.createElement("div");
+            wrapper.className = "message";
+
+            const avatar = document.createElement("div");
+            avatar.className = "avatar";
+
+            if (m.role === "assistant") {
+                avatar.classList.add("ai");
+                avatar.innerHTML = "🤖";
+            } else {
+                avatar.innerHTML = "🙂";
+            }
+
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+            bubble.innerHTML = marked.parse(m.content || "");
+
+            bubble.querySelectorAll("pre code").forEach(el => {
+                hljs.highlightElement(el);
+            });
+
+            wrapper.appendChild(avatar);
+            wrapper.appendChild(bubble);
+
+            chatArea.appendChild(wrapper);
+
+            scrollBottom();
+        }
+
+        function scrollBottom() {
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function createStreamingMessage() {
+
+            const wrapper = document.createElement("div");
+            wrapper.className = "message";
+
+            const avatar = document.createElement("div");
+            avatar.className = "avatar ai";
+            avatar.innerHTML = "🤖";
+
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+            bubble.innerHTML = "<i>Thinking...</i>";
+
+            wrapper.appendChild(avatar);
+            wrapper.appendChild(bubble);
+
+            chatArea.appendChild(wrapper);
+
+            scrollBottom();
+
+            return bubble;
+        }
+
+        async function streamChat(data, onChunk) {
+
+            const response = await fetch("/api/chat", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(data)
+
+            });
+
+            if (!response.ok) {
+
+                const txt = await response.text();
+                throw new Error(txt || "Chat request failed.");
+
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+
+            let full = "";
+
+            while (true) {
+
+                const { done, value } = await reader.read();
+
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+
+                full += chunk;
+
+                onChunk(full);
+
+            }
+
+            return full;
+        }
+
+        async function send() {
+
+            if (!currentChat) {
+
+                await newChat();
+
+            }
+
+            const text = prompt.value.trim();
+
+            if (!text) return;
+
+            addMessage({
+                role: "user",
+                content: text
+            });
+
+            prompt.value = "";
+
+            const bubble = createStreamingMessage();
+
+            try {
+
+                await streamChat({
+
+                    chatId: currentChat,
+
+                    message: text,
+
+                    model: modelSelect.value,
+
+                    temperature: Number(temperatureSlider.value),
+
+                    context: Number(contextSlider.value)
+
+                }, full => {
+
+                    bubble.innerHTML = marked.parse(full);
+
+                    bubble.querySelectorAll("pre code").forEach(el => {
+                        hljs.highlightElement(el);
+                    });
+
+                    scrollBottom();
+
+                });
+
+                await openChat(currentChat);
+
+                const me = await api("/api/me");
+                tokenText.innerText = "Tokens: " + me.tokens;
+
+            } catch (err) {
+
+                bubble.innerHTML =
+                    "<span style='color:#ff5555'>" +
+                    err.message +
+                    "</span>";
+
+            }
+
+        }
+
+        async function newChat() {
+
+            const r = await api(
+                "/api/chats",
+                "POST"
+            );
+
+            currentChat = r.id;
+
+            chatArea.innerHTML = "";
+
+            await loadChats();
+
+            toast("New chat created");
+
+        }
+
+        document.querySelector(".newChat").onclick = newChat;
+
+        sendBtn.onclick = send;
+
+        prompt.addEventListener("keydown", e => {
+
+            if (e.key === "Enter" && !e.shiftKey) {
+
+                e.preventDefault();
+
+                send();
+
+            }
+
+        });
+
+        login();
+    </script>
+
+</body>
+
+</html>
